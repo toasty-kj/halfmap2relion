@@ -18,12 +18,13 @@ def reedfile():
     root = tkinter.Tk()
     root.withdraw()
     # select directory
+    messagebox.showinfo("Select Job directory", "Select Job directory on Refinement from CryoSparc")
     while True:
         direc = filedialog.askdirectory()
         direc_sharp = direc + "/*sharp.mrc"
         direc_half = direc + "/**"
         sharp_map = glob.glob(direc_sharp)
-        # if selected direcotry doesn't contain refined mrc map
+        # if selected directory doesn't contain refined mrc map
         if not sharp_map:
             print(
                 "couldn't find \"volume_map_sharp.mrc\", please make sure you select Job from Homogeneous Refinement")
