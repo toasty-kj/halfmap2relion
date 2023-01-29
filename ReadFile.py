@@ -1,18 +1,22 @@
+import glob
 import tkinter
 from tkinter import filedialog
 
 class ReadFile:
-    def reedfiles(self):
+    def reedfile(self):
 
         # hide root window
         root = tkinter.Tk()
         root.withdraw()
         # select directory
-        files = filedialog.askdirectory()
-        return files
+        direc = filedialog.askdirectory()
+        return direc
 
-    def get_mrc_path(self):
-        rx = "volume_map_sharp.mrc"
+    def get_mrc_path(self, direc):
+        direc = direc +"/"
+        sharp_map = glob.glob(direc + "*.volume_map_sharp.mrc")
+        print(sharp_map)
+
 
 
 

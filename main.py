@@ -7,4 +7,8 @@ relionの解析ディレクトリのパスを選択する
 2つのhalf fileを選択されたrelionの解析ディレクトリにcopyする
 ２つのcopyされたhalf fileの名前をrenameする
 '''
+import ReadFile
 
+readfile = ReadFile.ReadFile()
+direc=readfile.reedfile()
+readfile.get_mrc_path(direc)
