@@ -22,10 +22,8 @@ def sel_raw_data():
     # select directory
     messagebox.showinfo("Select directory containing raw data", "Select Directory you want to start processing")
     while True:
-        '''
-        delete one line below and replace with this code #direc = filedialog.askdirectory()
-        '''
-        direc = filedialog.askdirectory(initialdir="/home/koji/Downloads")
+
+        direc = filedialog.askdirectory(initialdir="/media/")
         direc_raw = direc + "/*FrameImage.tif"
         # direc_half = direc + "/**"
         sharp_map = glob.glob(direc_raw)
