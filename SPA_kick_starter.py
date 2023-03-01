@@ -11,4 +11,30 @@ import shutil
 import tkinter
 from tkinter import messagebox, filedialog
 
-def sel_raw_data()
+def sel_raw_data():
+    # hide root window
+    root = tkinter.Tk()
+    root.withdraw()
+    # select directory
+    messagebox.showinfo("Select directory containing raw data", "Select Job Directory you want to start processing")
+    while True:
+        direc = filedialog.askdirectory()
+        direc_raw = direc + "/*FrameImage.tif"
+        direc_half = direc + "/**"
+        sharp_map = glob.glob(direc_raw)
+        # if selected directory doesn't contain refined mrc map
+        if not sharp_map:
+            print(
+                "couldn't find \"volume_map_sharp.mrc\", please make sure you select Job from Homogeneous Refinement")
+            messagebox.showerror("cound't find file !!",
+                                 "couldn't find \"volume_map_sharp.mrc\", please make sure you select Job from Homogeneous Refinement")
+
+        # if it contains refined map
+        if sharp_map:
+            print("loaded successfully!" + " :" + str(sharp_map))
+            half_map = [p for p in glob.glob(direc_half, recursive=True)
+                        if re.search("map_half", p)]
+            messagebox.showinfo("Loaded Successfully!", "Loaded Successfully!!")
+            # return list stored two path(both half map)
+            return half_map
+            break
