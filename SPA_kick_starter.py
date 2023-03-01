@@ -6,9 +6,9 @@ Finally, run relion and make gainref file (import linked data and data for gainr
 (you can proceed to motion correction on relion if Yes.)
 """
 import glob
+import os
 import tkinter
 from tkinter import messagebox, filedialog
-import os
 
 
 def sel_raw_data():
@@ -63,13 +63,20 @@ def dir_maker(raw_dir):
     os.mkdir(new_proc_path)
     new_movie_dir = new_proc_path + "/" + "movie"
     os.mkdir(new_movie_dir)
+    new_gainref_dir = new_proc_path + "/" + "gainref"
+    os.mkdir(new_gainref_dir)
     # make process and Movie directory
-    path_list = [proc_path, new_proc_path, new_movie_dir]
+    path_list = [proc_path, new_proc_path, new_movie_dir, new_gainref_dir]
     return path_list
 
-def make_link(new_movie_dir, raw_mic):
-    i=0
-    for i in range(len(raw_mic)):
+
+def make_link(new_movie_dir, raw_mic, limit=999999999):
+    if limit < len(raw_mic):
+        n = limit
+    else:
+        n = len(raw_mic)
+    i = 0
+    for i in range(n):
         name = raw_mic[i].split("/")
         dis = new_movie_dir + name[-1]
         os.symlink(raw_mic[i], dis)
@@ -79,10 +86,13 @@ def make_link(new_movie_dir, raw_mic):
         print("")
     print("made symbolic link!")
 
+
 raw_dir = sel_raw_data()
 raw_mic = get_raw_mic(raw_dir)
 path_list = dir_maker(raw_dir)
 proc_path = path_list[0]
 new_proc_path = path_list[1]
-new_movie_dir = path_list[2]+"/"
+new_movie_dir = path_list[2] + "/"
+new_gainref_dir = path_list[3] + "/"
 make_link(new_movie_dir, raw_mic)
+make_link(new_gainref_dir, raw_mic, 500)
