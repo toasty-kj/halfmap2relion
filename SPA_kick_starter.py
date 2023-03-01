@@ -12,6 +12,10 @@ from tkinter import messagebox, filedialog
 
 
 def sel_raw_data():
+    """
+    select path of a directory with raw data
+    :return: path of the directory raw data in it
+    """
     # hide root window
     root = tkinter.Tk()
     root.withdraw()
@@ -45,6 +49,11 @@ def sel_raw_data():
 
 
 def get_raw_mic(raw_dir):
+    """
+    get FrameImage.tif from variable raw data format
+    :param raw_dir: selected directory with raw data
+    :return: list of FrameImage.tif
+    """
     direc_raw = raw_dir + "/*FrameImage.tif"
     # direc_half = raw_dir + "/**"
     sharp_map = glob.glob(direc_raw)
@@ -52,6 +61,11 @@ def get_raw_mic(raw_dir):
 
 
 def dir_maker(raw_dir):
+    """
+    Select destination which actual processing will be conducted
+    :param raw_dir: selected directory with raw data
+    :return: a list contains path of directory process file is made, process file, movie file under the process file, and gain reference file in this order.
+    """
     messagebox.showinfo("Select Path", "Select path you want to make a directory for processing")
     print("Select path you want to make a directory for processing")
     proc_path = filedialog.askdirectory(initialdir=raw_dir)
@@ -71,6 +85,12 @@ def dir_maker(raw_dir):
 
 
 def make_link(new_movie_dir, raw_mic, limit=999999999):
+    """
+    make symbolic link
+    :param new_movie_dir: path of movie directory under process directory
+    :param raw_mic: list of FramaImage.tif
+    :param limit: limit of number of micrograph used for the link, the limit is used for gain reference file
+    """
     if limit < len(raw_mic):
         n = limit
     else:
