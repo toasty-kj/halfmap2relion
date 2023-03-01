@@ -20,7 +20,7 @@ def sel_raw_data():
     root = tkinter.Tk()
     root.withdraw()
     # select directory
-    messagebox.showinfo("Select directory containing raw data", "Select Directory you want to start processing")
+    messagebox.showinfo("Select directory containing raw data", "Select Directory containing raw data")
     while True:
 
         direc = filedialog.askdirectory(initialdir="/media/")
