@@ -18,9 +18,12 @@ def sel_raw_data():
     # select directory
     messagebox.showinfo("Select directory containing raw data", "Select Job Directory you want to start processing")
     while True:
-        direc = filedialog.askdirectory()
+        '''
+        delete one line below and replace with this code #direc = filedialog.askdirectory()
+        '''
+        direc = filedialog.askdirectory(initialdir="/home/koji/Downloads")
         direc_raw = direc + "/*FrameImage.tif"
-        direc_half = direc + "/**"
+        #direc_half = direc + "/**"
         sharp_map = glob.glob(direc_raw)
         # if selected directory doesn't contain refined mrc map
         if not sharp_map:
@@ -31,12 +34,26 @@ def sel_raw_data():
 
         # if it contains refined map
         if sharp_map:
-            print("loaded successfully!" + " :" + str(sharp_map))
-            half_map = [p for p in glob.glob(direc_half, recursive=True)
-                        if re.search("map_half", p)]
+            #print number of micrographs in the selected directory
+            print(str(sharp_map))
+            print("loaded successfully!")
+            print("loaded " + str(len(sharp_map)) + " micrographs")
             messagebox.showinfo("Loaded Successfully!", "Loaded Successfully!!")
             # return list stored two path(both half map)
-            return half_map
+            return direc
             break
+def get_raw_mic(raw_dir):
+    direc_raw = raw_dir + "/*FrameImage.tif"
+    # direc_half = raw_dir + "/**"
+    sharp_map = glob.glob(direc_raw)
+    return sharp_map
+def dir_maker(raw_dir):
+    print("Select path you want to make a directory for processing")
+    proc_path = filedialog.askdirectory(initialdir=raw_dir)
+    return proc_path
+    #make process and Movie directory
 
-raw_mic = 
+raw_dir = sel_raw_data()
+raw_mic = get_raw_mic(raw_dir)
+print(raw_mic)
+proc_path = dir_maker(raw_dir)
