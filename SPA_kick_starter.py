@@ -38,3 +38,5 @@ def sel_raw_data():
             # return list stored two path(both half map)
             return half_map
             break
+
+raw_mic = 
