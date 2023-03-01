@@ -37,7 +37,7 @@ def sel_raw_data():
         # if it contains refined map
         if sharp_map:
             # print number of micrographs in the selected directory
-            print(str(sharp_map))
+        
             print("loaded successfully!")
             print("loaded " + str(len(sharp_map)) + " micrographs")
             messagebox.showinfo("Loaded Successfully!", "Loaded Successfully!!")
