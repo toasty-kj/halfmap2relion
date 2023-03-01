@@ -78,7 +78,10 @@ def make_link(new_movie_dir, raw_mic):
         print(name[-1])
         dis = new_movie_dir + name[-1]
         os.symlink(raw_mic[i], dis)
-    os.listdir(new_movie_dir)
+        print(raw_mic[i])
+        print(">>>>")
+        print(dis)
+    print("made symbolic link!")
 
 raw_dir = sel_raw_data()
 raw_mic = get_raw_mic(raw_dir)
