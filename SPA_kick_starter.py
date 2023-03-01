@@ -6,8 +6,6 @@ Finally, run relion and make gainref file (import linked data and data for gainr
 (you can proceed to motion correction on relion if Yes.)
 """
 import glob
-import re
-import shutil
 import tkinter
 from tkinter import messagebox, filedialog
 import os
@@ -62,11 +60,9 @@ def dir_maker(raw_dir):
     # dir_new_name=tkinter.Entry(textvariable=tkinter.StringVar())
     dir_new_name = input()
     new_proc_path = proc_path + "/" + dir_new_name
-    print(new_proc_path)
     os.mkdir(new_proc_path)
     new_movie_dir = new_proc_path + "/" + "movie"
     os.mkdir(new_movie_dir)
-    print(new_movie_dir)
     # make process and Movie directory
     path_list = [proc_path, new_proc_path, new_movie_dir]
     return path_list
@@ -75,20 +71,18 @@ def make_link(new_movie_dir, raw_mic):
     i=0
     for i in range(len(raw_mic)):
         name = raw_mic[i].split("/")
-        print(name[-1])
         dis = new_movie_dir + name[-1]
         os.symlink(raw_mic[i], dis)
         print(raw_mic[i])
         print(">>>>")
         print(dis)
+        print("")
     print("made symbolic link!")
 
 raw_dir = sel_raw_data()
 raw_mic = get_raw_mic(raw_dir)
-print(raw_mic)
 path_list = dir_maker(raw_dir)
 proc_path = path_list[0]
 new_proc_path = path_list[1]
 new_movie_dir = path_list[2]+"/"
-print(len(raw_mic))
 make_link(new_movie_dir, raw_mic)
