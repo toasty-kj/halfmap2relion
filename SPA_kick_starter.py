@@ -29,15 +29,16 @@ def sel_raw_data():
         sharp_map = glob.glob(direc_raw)
         # if selected directory doesn't contain refined mrc map
         if not sharp_map:
+            direc_raw = direc + "/*"
             print(
-                "couldn't find \"volume_map_sharp.mrc\", please make sure you select Job from Homogeneous Refinement")
+                "couldn't find \"FrameImage.tif\", please make sure you select Job from Homogeneous Refinement")
             messagebox.showerror("cound't find file !!",
-                                 "couldn't find \"volume_map_sharp.mrc\", please make sure you select Job from Homogeneous Refinement")
+                                 "couldn't find \"FrameImage.tif\", please make sure you select Job from Homogeneous Refinement")
 
-        # if it contains refined map
+        # if it contains raw data
         if sharp_map:
             # print number of micrographs in the selected directory
-        
+
             print("loaded successfully!")
             print("loaded " + str(len(sharp_map)) + " micrographs")
             messagebox.showinfo("Loaded Successfully!", "Loaded Successfully!!")
