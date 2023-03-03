@@ -33,23 +33,34 @@ def sel_raw_data():
         if not sharp_map:
             direc_raw = direc + "/Frames/supervisor*/Image*/GridSquare*/Data/*Fractions.mrc"
             sharp_map = glob.glob(direc_raw)
-            if sharp_map:
+            if sharp_map:  # EPU
                 print("loaded successfully!")
                 print("loaded " + str(len(sharp_map)) + " micrographs")
-                messagebox.showinfo("Loaded Successfully!", "Loaded Successfully!!")
+                messagebox.showinfo("Loaded Successfully!", "Loaded Successfully!! "
+                                                            "loaded " + str(len(sharp_map)) + " micrographs")
                 return direc
+            if not sharp_map:
+                direc_raw = direc + "*.tif"
+                sharp_map = glob.glob(direc_raw)
+                if sharp_map:  # SerialEM
+                    print("loaded successfully!")
+                    print("loaded " + str(len(sharp_map)) + " micrographs")
+                    messagebox.showinfo("Loaded Successfully!", "Loaded Successfully!! "
+                                                                "loaded " + str(len(sharp_map)) + " micrographs")
+                    return direc
             if not sharp_map:
                 print(
                     "couldn't find \"FrameImage.tif\", please make sure you select directory with raw data")
                 messagebox.showerror("couldn't find file !!",
-                                     "couldn't find \"FrameImage.tif\" or \"Fractions.mrc\", please make sure you select Job from Homogeneous Refinement")
+                                     "couldn't find \"FrameImage.tif\" , \"Fractions.mrc\" or \"*.tif\", please make sure you raw data is contained in the selected directory")
         # if it contains raw data
-        if sharp_map:
+        if sharp_map:  # JADAS
             # print number of micrographs in the selected directory
 
             print("loaded successfully!")
             print("loaded " + str(len(sharp_map)) + " micrographs")
-            messagebox.showinfo("Loaded Successfully!", "Loaded Successfully!!")
+            messagebox.showinfo("Loaded Successfully!", "Loaded Successfully!! "
+                                                        "loaded " + str(len(sharp_map)) + " micrographs")
             # return list stored two path(both half map)
             return direc
             break
@@ -85,9 +96,9 @@ def dir_maker(raw_dir):
     dir_new_name = input()
     new_proc_path = proc_path + "/" + dir_new_name
     os.mkdir(new_proc_path)
-    new_movie_dir = new_proc_path + "/" + "movie"
+    new_movie_dir = new_proc_path + "/" + "movie" + "/"
     os.mkdir(new_movie_dir)
-    new_gainref_dir = new_proc_path + "/" + "gainref"
+    new_gainref_dir = new_proc_path + "/" + "gainref" + "/"
     os.mkdir(new_gainref_dir)
     # make process and Movie directory
     path_list = [proc_path, new_proc_path, new_movie_dir, new_gainref_dir]
@@ -119,13 +130,13 @@ def make_link(new_movie_dir, raw_mic, limit=999999999):
 
 raw_dir = sel_raw_data()
 # check Thermo or JEOL
-ifjeol = Import_relion.Import2Relion()
+ifjeol = Import_relion.Import2Relion()  # determine machine manufacturer and return True for JEOL and False for Thermo
 jeol = ifjeol.JEOL_boolean(raw_dir)
 raw_mic = get_raw_mic(raw_dir, jeol)
 path_list = dir_maker(raw_dir)
 proc_path = path_list[0]
 new_proc_path = path_list[1]
-new_movie_dir = path_list[2] + "/"
-new_gainref_dir = path_list[3] + "/"
-make_link(new_movie_dir, raw_mic)
-make_link(new_gainref_dir, raw_mic, 500)
+new_movie_dir = path_list[2]
+new_gainref_dir = path_list[3]
+make_link(new_movie_dir, raw_mic)  # make symbolic for movie directory
+make_link(new_gainref_dir, raw_mic, 500)  # make the link for gainref directory
