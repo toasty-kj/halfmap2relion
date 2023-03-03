@@ -10,6 +10,8 @@ import os
 import tkinter
 from tkinter import messagebox, filedialog
 
+import Import_relion
+
 
 def sel_raw_data():
     """
@@ -29,12 +31,18 @@ def sel_raw_data():
         sharp_map = glob.glob(direc_raw)
         # if selected directory doesn't contain refined mrc map
         if not sharp_map:
-            direc_raw = direc + "/*"
-            print(
-                "couldn't find \"FrameImage.tif\", please make sure you select Job from Homogeneous Refinement")
-            messagebox.showerror("cound't find file !!",
-                                 "couldn't find \"FrameImage.tif\", please make sure you select Job from Homogeneous Refinement")
-
+            direc_raw = direc + "/Frames/supervisor*/Image*/GridSquare*/Data/*Fractions.mrc"
+            sharp_map = glob.glob(direc_raw)
+            if sharp_map:
+                print("loaded successfully!")
+                print("loaded " + str(len(sharp_map)) + " micrographs")
+                messagebox.showinfo("Loaded Successfully!", "Loaded Successfully!!")
+                return direc
+            if not sharp_map:
+                print(
+                    "couldn't find \"FrameImage.tif\", please make sure you select directory with raw data")
+                messagebox.showerror("couldn't find file !!",
+                                     "couldn't find \"FrameImage.tif\" or \"Fractions.mrc\", please make sure you select Job from Homogeneous Refinement")
         # if it contains raw data
         if sharp_map:
             # print number of micrographs in the selected directory
@@ -47,13 +55,16 @@ def sel_raw_data():
             break
 
 
-def get_raw_mic(raw_dir):
+def get_raw_mic(raw_dir, jeol):
     """
     get FrameImage.tif from variable raw data format
     :param raw_dir: selected directory with raw data
     :return: list of FrameImage.tif
     """
-    direc_raw = raw_dir + "/*FrameImage.tif"
+    if jeol == True:
+        direc_raw = raw_dir + "/*FrameImage.tif"
+    else:
+        direc_raw = raw_dir + "/Frames/supervisor*/Image*/GridSquare*/Data/*Fractions.mrc"
     # direc_half = raw_dir + "/**"
     sharp_map = glob.glob(direc_raw)
     return sharp_map
@@ -107,7 +118,10 @@ def make_link(new_movie_dir, raw_mic, limit=999999999):
 
 
 raw_dir = sel_raw_data()
-raw_mic = get_raw_mic(raw_dir)
+# check Thermo or JEOL
+ifjeol = Import_relion.Import2Relion()
+jeol = ifjeol.JEOL_boolean(raw_dir)
+raw_mic = get_raw_mic(raw_dir, jeol)
 path_list = dir_maker(raw_dir)
 proc_path = path_list[0]
 new_proc_path = path_list[1]
