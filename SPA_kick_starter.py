@@ -10,6 +10,7 @@ import os
 import tkinter
 from tkinter import messagebox, filedialog
 
+import GainRef_relion
 import Import_relion
 
 
@@ -130,6 +131,10 @@ def make_link(new_movie_dir, raw_mic, limit=999999999):
     print("made symbolic link!")
 
 
+def print_sep():
+    print("-----------------------------------")
+
+
 raw_dir = sel_raw_data()
 # check Thermo or JEOL
 soft = Import_relion.JEOL_num(raw_dir)  # determine machine manufacturer and return True for JEOL and False for Thermo
@@ -139,9 +144,14 @@ proc_path = path_list[0]
 new_proc_path = path_list[1]
 new_movie_dir = path_list[2]
 new_gainref_dir = path_list[3]
+os.chdir(new_proc_path)
 make_link(new_movie_dir, raw_mic)  # make symbolic for movie directory
 make_link(new_gainref_dir, raw_mic, 500)  # make the link for gainref directory
 voltage = Import_relion.ask_kv()
 param = Import_relion.ImportRelion(new_proc_path, kv=voltage, inp=new_movie_dir, gainref=False, software=soft)
 os.mkdir(new_proc_path + "/" + "Import" + "/")
 param.import2relion()
+gainref_param = Import_relion.ImportRelion(new_proc_path, kv=voltage, inp=new_movie_dir, gainref=True, software=soft)
+input_for_gainref = gainref_param.import2relion()
+gainref = GainRef_relion.GainRef(input_for_gainref, 24)
+gainref.estimate_gain()

@@ -9,10 +9,11 @@ class ImportRelion:
                  beamtile_x="0",
                  beamtile_y="0",
                  ofile="movies.star"):
-        if gainref:
+        self.gainref = gainref
+        if self.gainref:
             # odir = "Import/importgainref"
             odir = "imported_gainref"
-        if not gainref:
+        if not self.gainref:
             odir = "imported_mic"
         self.odir = "Import/" + odir
         if software == 1:  # JADAS
@@ -72,6 +73,8 @@ class ImportRelion:
                 " --odir " + self.odir + " --ofile " + self.ofile + " --pipeline_control " + self.pipeline_control)
         print(command_line)
         subprocess.run(command_line, shell=True)
+        input_for_gainref = self.odir + self.ofile
+        return input_for_gainref
 
 
 def JEOL_num(direc):
