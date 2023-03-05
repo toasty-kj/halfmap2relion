@@ -9,6 +9,17 @@ class ImportRelion:
                  beamtile_x="0",
                  beamtile_y="0",
                  ofile="movies.star"):
+        """
+        :param proc_path: path for processing directory
+        :param kv: accelerating voltage
+        :param inp: path for a directory with symbolic link is stored
+        :param gainref: True for importing data for gainref
+        :param software: software used for data collection, 1 for JADAS,2 for EPU and 3 for SerialEM
+        :param optic_group_name: name of optic group
+        :param beamtile_x: beamtile X
+        :param beamtile_y: beamtilt Y
+        :param ofile:output file
+        """
         self.gainref = gainref
         if self.gainref:
             # odir = "Import/importgainref"
@@ -58,13 +69,11 @@ class ImportRelion:
         self.pipeline_control = "Import/"
 
     def import2relion(self):
-        # voltage =
-        # subprocess.run(["relion", "&"])
-        command = ["relion_import", self.do_movies, "--optics_group_name", self.optic_group_name, "--angpix",
-                   self.angpix, "--kV", self.kv, "--Cs",
-                   self.Cs, "--Q0",
-                   self.Q0, "--beamtilt_x", self.beamtilt_x, "--beamtilt_y", self.beamtilt_y, "--i", self.input,
-                   "--odir", self.odir, "--ofile", self.ofile, "--pipeline_control", self.pipeline_control]
+        """
+        import provided data to given directory
+        :return: path for the directory with imported data
+        """
+
         command_line = (
                 "relion_import " + self.do_movies + " --optics_group_name " + self.optic_group_name + " --angpix " +
                 self.angpix + " --kV " + self.kv + " --Cs " +
@@ -111,10 +120,15 @@ def JEOL_num(direc):
 
 
 def ask_kv():
+    """
+    select accelerating voltage for importing data
+    :return: voltage
+    """
     kv_bl = messagebox.askquestion("Select voltage", "Would you like to set voltage \"300kV\"?"
                                                      "  Click No for \"200kV\"")
     if kv_bl == True:
         voltage = 300
     else:
         voltage = 200
+    print("Setting accelerating volatage as " + str(voltage))
     return voltage
