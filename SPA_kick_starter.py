@@ -121,18 +121,19 @@ def make_link(new_movie_dir, raw_mic, limit=999999999):
         name = raw_mic[i].split("/")
         dis = new_movie_dir + name[-1]
         os.symlink(raw_mic[i], dis)
-        print(raw_mic[i])
+        """print(raw_mic[i])
         print(">>>>")
         print(dis)
         print("")
+        """
+
     print("made symbolic link!")
 
 
 raw_dir = sel_raw_data()
 # check Thermo or JEOL
-ifjeol = Import_relion.Import2Relion()  # determine machine manufacturer and return True for JEOL and False for Thermo
-jeol = ifjeol.JEOL_boolean(raw_dir)
-raw_mic = get_raw_mic(raw_dir, jeol)
+soft = Import_relion.JEOL_num(raw_dir)  # determine machine manufacturer and return True for JEOL and False for Thermo
+raw_mic = get_raw_mic(raw_dir, soft)
 path_list = dir_maker(raw_dir)
 proc_path = path_list[0]
 new_proc_path = path_list[1]
@@ -140,3 +141,7 @@ new_movie_dir = path_list[2]
 new_gainref_dir = path_list[3]
 make_link(new_movie_dir, raw_mic)  # make symbolic for movie directory
 make_link(new_gainref_dir, raw_mic, 500)  # make the link for gainref directory
+voltage = Import_relion.ask_kv()
+param = Import_relion.ImportRelion(new_proc_path, kv=voltage, inp=new_movie_dir, gainref=False, software=soft)
+os.mkdir(new_proc_path + "/" + "Import" + "/")
+param.import2relion()
