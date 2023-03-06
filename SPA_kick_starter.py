@@ -1,8 +1,9 @@
 import os
 
+import CTFfind
 import GainRef_relion
 import Import_relion
-import MortionCorr
+import MotionCorr
 import Preprocessing
 
 """
@@ -37,9 +38,16 @@ Preprocessing.print_sep()
 gainref_param = Import_relion.ImportRelion(new_proc_path, kv=voltage, inp=new_movie_dir, gainref=True, software=soft)
 input_for_gainref = gainref_param.import2relion()  # import raw data for gainref for relion
 Preprocessing.print_sep()
+motionCorr_boolean = Preprocessing.further_proc()
 gainref = GainRef_relion.GainRef(input_for_gainref, 24)  # estimate gainref, default number of thread is 12
 gainref.estimate_gain()
 Preprocessing.print_sep()
-motionCorr_param = MortionCorr.MorrtionCorr(input_for_proc, "gainref.mrc")
-motionCorr_param.correctMotion()
-Preprocessing.print_sep()
+if motionCorr_boolean:
+    motionCorr_param = MotionCorr.MorrtionCorr(input_for_proc, "gainref.mrc", j=24)
+    motcorr_path = motionCorr_param.correctMotion()
+    Preprocessing.print_sep()
+
+    # CTF estimation
+    ctfEsti_param = CTFfind.CTFfind(motcorr_path, out="CtfFind/", pwd=new_proc_path)
+    ctfEsti_param.ctffind()
+    Preprocessing.print_sep()

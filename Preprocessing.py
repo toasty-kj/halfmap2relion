@@ -129,3 +129,12 @@ def print_sep():
     print separation between main functions
     """
     print("-----------------------------------------------")
+
+
+def further_proc():
+    furproc = messagebox.askquestion("Further analysis",
+                                     "Would you proceed to further analysis on RELION after estimation of "
+                                     "gainref? "
+                                     "If you choose \"Yes\", automatically proceed to Motioncorrection and "
+                                     "CTF estimation after the estimation")
+    return furproc

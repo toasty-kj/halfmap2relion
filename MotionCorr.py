@@ -24,7 +24,7 @@ class MorrtionCorr:
 
     def correctMotion(self):
         # os.mkdir()
-        command_line = ("\'which relion_run_motioncorr_mpi\' --i " + self.i + " --o " + self.out + " --first_frame_sum "
+        command_line = ("`which relion_run_motioncorr_mpi` --i " + self.i + " --o " + self.out + " --first_frame_sum "
                         + self.first_frame_sum + " --last_frame_sum " + self.last_frame_sum + " --use_own --j " + self.j
                         + " --float16 --bin_factor " + self.bin_factor + " --bfactor " + self.bfactor + " --dose_per_frame " + self.dose_per_frame
                         + " --preexposure " + self.preexposure + " --patch_x " + self.patch_x + " --patch_y " + self.patch_y
@@ -33,4 +33,5 @@ class MorrtionCorr:
                         + " --pipeline_control " + self.pipeline_control)
         print(command_line)
         subprocess.run(command_line, shell=True)
-
+        motcorr_path = self.out + "corrected_micrographs.star"
+        return motcorr_path
