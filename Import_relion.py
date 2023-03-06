@@ -40,18 +40,18 @@ class ImportRelion:
             else:
                 print("please input pix cell size")
                 self.angpix = int(input("pixel size (A)>>>"))
-        elif software == 3:
+        elif software == 3:  # SerialEM
             self.input = inp + "*.tif"
             if kv == 200:
                 self.angpix = 0.849
             else:
                 print("please input pix cell size")
-                self.angpix = int(input("pixel size (A)>>>"))
+                self.angpix = float(input("pixel size (A)>>>"))
         else:
             print("failed to detect software. please input pixel size manually")
             messagebox.showinfo("failed to detect software", "failed to detect software.please input pixel size "
                                                              "manually")
-            self.angpix = int(input("pixel size (A)>>>"))
+            self.angpix = float(input("pixel size (A)>>>"))
         pwd = pathlib.Path(proc_path)
         path = pathlib.Path(self.input)
         # self.input = "\\" + "\"" + str(path.relative_to(pwd)) + "\\" + "\""
@@ -95,7 +95,13 @@ def JEOL_num(direc):
     direc_raw = direc + "/*FrameImage.tif"
     # direc_half = direc + "/**"
     sharp_map = glob.glob(direc_raw)
-    # if selected directory doesn't contain refined mrc map
+    # if it contains raw data
+    if sharp_map:  # JADAS
+        # print number of micrographs in the selected directory
+        # return boolean class True for JEOL, False for Thermo
+        software = 1
+        print("Loaded data obtained with JADAS")
+        return software
     if not sharp_map:
         direc_raw = direc + "/Frames/supervisor*/Image*/GridSquare*/Data/*Fractions.mrc"
         sharp_map = glob.glob(direc_raw)
@@ -110,13 +116,8 @@ def JEOL_num(direc):
                 software = 3
                 print("Loaded data obtained with SerialEM")
                 return software
-    # if it contains raw data
-    if sharp_map:  # JADAS
-        # print number of micrographs in the selected directory
-        # return boolean class True for JEOL, False for Thermo
-        software = 1
-        print("Loaded data of JADAS")
-        return software
+            else:
+                print("failed to detect data acquisition software")
 
 
 def ask_kv():
@@ -124,11 +125,11 @@ def ask_kv():
     select accelerating voltage for importing data
     :return: voltage
     """
-    kv_bl = messagebox.askquestion("Select voltage", "Would you like to set voltage \"300kV\"?"
-                                                     "  Click No for \"200kV\"")
-    if kv_bl == True:
+    kv_bl = messagebox.askyesno("Select voltage", "Would you like to set voltage \"300kV\"?"
+                                                  "  Click No for \"200kV\"")
+    if kv_bl is True:
         voltage = 300
-    else:
+    if kv_bl is False:
         voltage = 200
-    print("Setting accelerating volatage as " + str(voltage))
+    print("Setting accelerating voltage as " + str(voltage))
     return voltage

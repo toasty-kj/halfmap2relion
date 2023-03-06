@@ -31,7 +31,7 @@ def sel_raw_data():
                                                             "loaded " + str(len(sharp_map)) + " micrographs")
                 return direc
             if not sharp_map:
-                direc_raw = direc + "*.tif"
+                direc_raw = direc + "/*.tif"
                 sharp_map = glob.glob(direc_raw)
                 if sharp_map:  # SerialEM
                     print("loaded successfully!")
@@ -132,9 +132,9 @@ def print_sep():
 
 
 def further_proc():
-    furproc = messagebox.askquestion("Further analysis",
-                                     "Would you proceed to further analysis on RELION after estimation of "
-                                     "gainref? "
-                                     "If you choose \"Yes\", automatically proceed to Motioncorrection and "
-                                     "CTF estimation after the estimation")
+    furproc = messagebox.askyesno("Further analysis",
+                                  "Would you proceed to further analysis on RELION after estimation of "
+                                  "gainref? "
+                                  "If you choose \"Yes\", automatically proceed to Motioncorrection and "
+                                  "CTF estimation after the estimation")
     return furproc
