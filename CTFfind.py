@@ -16,7 +16,7 @@ class CTFfind:
         self.dAsp = str(dAst)
         pwd = pathlib.Path(pwd)
         path = pathlib.Path("/home/pub/ctffind-4.1.14/bin/ctffind")
-        self.ctffind_exe = str(path.relative_to(pwd))
+        self.ctffind_exe = str(path)
         #
         print(self.ctffind_exe)
         self.ctfwin = str(ctfWin)
@@ -26,8 +26,8 @@ class CTFfind:
         command_line = ("`which relion_run_ctffind_mpi` --i " + self.i + " --o " + self.o + " --Box "
                         + self.Box + " --ResMin " + self.ResMin + " --ResMax " + self.ResMax
                         + " --dFMin " + self.dFMin + " --dFMax " + self.dFMax
-                        + " --FStep " + self.FStep + " --dAst_x " + self.dAsp + " --ctffind4_exe " + self.ctffind_exe
-                        + " --ctfWin " + self.ctfwin + " --is_ctffind4 --use_given_ps --pipeline_control"
+                        + " --FStep " + self.FStep + " --dAst " + self.dAsp + " --ctffind_exe " + self.ctffind_exe
+                        + " --ctfWin " + self.ctfwin + " --is_ctffind4 --use_given_ps --only_do_unfinished --pipeline_control "
                         + self.pipeline_control)
         print(command_line)
         subprocess.run(command_line, shell=True)
