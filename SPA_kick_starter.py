@@ -15,7 +15,7 @@ Finally, run relion and make gainref file (import linked data and data for gainr
 """
 Preprocessing.print_sep()
 raw_dir = Preprocessing.sel_raw_data()  # select path od directory for obtained data
-soft = Import_relion.JEOL_num(raw_dir)  # determine machine manufacturer and return True for JEOL and False for Thermo
+soft = Import_relion.Soft_num(raw_dir)  # determine machine manufacturer and return True for JEOL and False for Thermo
 raw_mic = Preprocessing.get_raw_mic(raw_dir, soft)  # get a list with path of each micrographs
 Preprocessing.print_sep()
 path_list = Preprocessing.dir_maker(

@@ -57,18 +57,22 @@ def sel_raw_data():
             break
 
 
-def get_raw_mic(raw_dir, jeol):
+def get_raw_mic(raw_dir, soft):
     """
     get FrameImage.tif from variable raw data format
     :param raw_dir: selected directory with raw data
     :return: list of FrameImage.tif
     """
-    if jeol == True:
+    if soft == 1:
         direc_raw = raw_dir + "/*FrameImage.tif"
-    else:
+    elif soft == 2:
         direc_raw = raw_dir + "/Frames/supervisor*/Image*/GridSquare*/Data/*Fractions.mrc"
+    elif soft == 3:
+        direc_raw = raw_dir + "/*.tif"
     # direc_half = raw_dir + "/**"
     sharp_map = glob.glob(direc_raw)
+    if not sharp_map:
+        print("Loaded " + str(len(sharp_map)) + " micrographs!")
     return sharp_map
 
 
