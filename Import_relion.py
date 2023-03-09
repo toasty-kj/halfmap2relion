@@ -91,7 +91,7 @@ def Soft_num(direc):
     :param direc: path for the directory store raw data
     :return: return 1 for JADAS, 2 for EPU and 3 for SerialEM
     """
-    direc_raw = direc + "/*FrameImage.tif"
+    direc_raw = direc + "/IMAGE/*FrameImage.tif"
     sharp_map = glob.glob(direc_raw)
     # if it contains raw data
     if sharp_map:  # JADAS

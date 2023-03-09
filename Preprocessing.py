@@ -17,7 +17,7 @@ def sel_raw_data():
     while True:
 
         direc = filedialog.askdirectory(initialdir="/media/")
-        direc_raw = direc + "/*FrameImage.tif"
+        direc_raw = direc + "/IMAGE/*FrameImage.tif"
         # direc_half = direc + "/**"
         sharp_map = glob.glob(direc_raw)
         # if selected directory doesn't contain refined mrc map
@@ -64,7 +64,7 @@ def get_raw_mic(raw_dir, soft):
     :return: list of FrameImage.tif
     """
     if soft == 1:
-        direc_raw = raw_dir + "/*FrameImage.tif"
+        direc_raw = raw_dir + "/IMAGE/*FrameImage.tif"
     elif soft == 2:
         direc_raw = raw_dir + "/Frames/supervisor*/Image*/GridSquare*/Data/*Fractions.mrc"
     elif soft == 3:
